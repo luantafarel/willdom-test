@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broker Listings Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Broker Listings Dashboard</h1>
+    <!-- Canvas for the chart -->
+    <canvas id="listingsChart" width="400" height="200"></canvas>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('/api/listings-data');
+            const data = await response.json();
+            return data;
+        }
+
+        function processChartData(data) {
+            const brokers = Array.from(new Set(data.map(item => item.broker))); 
+            const months = Array.from(new Set(data.map(item => new Date(item.listing_month).toISOString().slice(0, 7))));
+
+            const datasets = brokers.map(broker => {
+                return {
+                    label: broker,
+                    data: months.map(month => {
+                        const record = data.find(item => item.broker === broker && new Date(item.listing_month).toISOString().slice(0, 7) === month);
+                        return record ? parseFloat(record.revenue) : 0;
+                    }),
+                    fill: false,
+                    borderColor: getRandomColor(),
+                };
+            });
+
+            return { datasets, labels: months };
+        }
+
+        function getRandomColor() {
+            return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        }
+
+        async function renderChart() {
+            const data = await fetchData();
+            console.log(data);  // Check the fetched data in the console
+            const chartData = processChartData(data);
+
+            const ctx = document.getElementById('listingsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels,
+                    datasets: chartData.datasets,
+                },
+                options: {
+                    scales: {
+                        x: { 
+                            title: { display: true, text: 'Month' } 
+                        },
+                        y: { 
+                            type: 'logarithmic', // Use logarithmic scale
+                            title: { display: true, text: 'Revenue' },
+                            beginAtZero: true,
+                            ticks: {
+                                autoSkip: false,
+                                maxTicksLimit: 10, // Adjust this to provide more granularity
+                            },
+                        },
+                    }
+                }
+            });
+        }
+
+        renderChart();
+    </script>
+</body>
+</html>

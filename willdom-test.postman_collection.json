@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "e995a8cc-9a36-4f09-9131-402b650cacf5",
+		"name": "willdom-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3315430",
+		"_collection_link": "https://athyna-skill-test.postman.co/workspace/My-Workspace~a2bde92e-ab69-493a-84c9-5a90aac9faf7/collection/3315430-e995a8cc-9a36-4f09-9131-402b650cacf5?action=share&source=collection_link&creator=3315430"
+	},
+	"item": [
+		{
+			"name": "Create Broker",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 41,\n    \"name\": \"Brooker N\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/brokers",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"brokers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Listings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 42,\n    \"listing_date\": \"2021-05-31\",\n    \"broker\": \"Brooker N\",\n    \"revenue\": 1000001\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/listings",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"listings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
